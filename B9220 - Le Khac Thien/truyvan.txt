@@ -1,0 +1,56 @@
+Thuc Hien Truy Van: 
+1,  Hiển thị danh sách sinh viên gồm các thông tin sau: Masv, HoSV, TenSV, NgaySinh, GioiTinh :
+- SELECT sv.MaSV, sv.HoSV, sv.TenSV, sv.NgaySinh, CASE WHEN sv.GioiTinh = 0 THEN "Nu" WHEN sv.GioiTinh = 1 THEN "Nam" END AS GioiTinh FROM sinhvien sv
+
+2,  Hiển thị danh sách sinh viên gồm các thông tin sau: Masv, HoSV, TenSV, NgaySinh, GioiTinh, MaKH, HocBong (sắp xếp MaKH tăng dần, MaSV giảm dần) 
+- SELECT sv.MaSV, sv.HoSV, sv.TenSV, sv.NgaySinh, CASE WHEN sv.GioiTinh = 0 THEN "Nu" WHEN sv.GioiTinh = 1 THEN "Nam" END AS GioiTinh, dk.MaKH, sv.HocBong
+FROM sinhvien sv
+INNER JOIN dm_khoa dk ON dk.MaKH = sv.MaKH 
+ORDER BY dk.MaKH ASC, sv.MaSV desc
+
+3,  Hiển thị bảng điểm sinh viên gồm các thông tin: MaSV, HoSV, TenSV, MaMH, Diem 
+
+-SELECT sv.MaSV, sv.HoSV, sv.TenSV, kq.MaMH, kq.Diem
+FROM sinhvien sv
+INNER JOIN ketqua kq ON kq.MaSV = sv.MaSV
+
+
+4, Hiển thị danh sách sinh viên có tên là “Chính” 
+
+- SELECT sv.* FROM sinhvien sv WHERE sv.TenSV LIKE "%Chinh%"
+
+
+5,  Hiển thị danh sách sinh viên có Nơi sinh là “Sài Gòn” 
+
+- SELECT sv.* FROM sinhvien sv WHERE sv.NoiSinh LIKE "%Sài Gòn%"
+
+
+6, Hiển thị danh sách sinh viên có Nơi Sinh là “Hà Nội” và học Khoa “TH” 
+
+- SELECT sv.* FROM sinhvien sv INNER JOIN dm_khoa dk ON dk.MaKH = sv.MaKH WHERE sv.NoiSinh LIKE "%Hà Nội%" AND dk.MaKH LIKE "%TH%"
+
+
+7, Hiển thị danh sách sinh viên có Họ là “Trần” và học Khoa “AV” 
+
+- SELECT sv.* FROM sinhvien sv INNER JOIN dm_khoa dk ON dk.MaKH = sv.MaKH WHERE sv.HoSV LIKE "%Trần%" AND dk.MaKH LIKE "%AV%"
+
+
+8, Hiển thị danh sách sinh viên có Mã số bắt đầu là B và học Khoa “AV” 
+
+- SELECT sv.* FROM sinhvien sv INNER JOIN dm_khoa dk ON dk.MaKH = sv.MaKH WHERE sv.MaSV LIKE "B%" AND dk.MaKH LIKE "%AV%"
+
+
+9, Tăng học bổng cho sinh viên Khoa Tin học mỗi sinh viên là 50000 
+
+
+- UPDATE sinhvien sv INNER JOIN dm_khoa dk ON dk.MaKH = sv.MaKH SET sv.HocBong = sv.HocBong + 50000 WHERE dk.TenKhoa LIKE "%Tin Học%"
+
+
+10, Cộng thêm 0.5 điểm thi môn học Cơ sở dữ liệu cho những sinh viên có điểm thi thấp hơn 5 
+
+- UPDATE ketqua kq INNER JOIN monhoc mh ON mh.MaMH = kq.MaMH SET kq.Diem = kq.Diem + 0.5 WHERE mh.TenMH LIKE "%Cơ Sở Dữ Liệu%" AND kq.Diem <= 5
+
+
+11, Xóa dữ liệu trong bảng kết quả của sinh viên có MaSV là B04
+
+- DELETE FROM ketqua WHERE MaSV = "B04"
